@@ -8,6 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="CLP ↔ MXN" />
   <title>CLP ↔ MXN</title>
   <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -16,9 +17,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100dvh;
-      background: #0f0f0f;
+      background: #1a0826;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -27,12 +28,12 @@
     }
 
     .card {
-      background: #1a1a1a;
-      border-radius: 24px;
+      background: #25103a;
+      border-radius: 28px;
       width: 100%;
       max-width: 400px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgba(240, 98, 146, 0.18), 0 0 0 1px rgba(206, 147, 216, 0.1);
     }
 
     /* Header con franjas de banderas */
@@ -76,23 +77,33 @@
       text-align: center;
       font-size: 22px;
       font-weight: 800;
-      color: white;
-      background: #111;
+      background: #160720;
       padding: 10px;
       letter-spacing: 2px;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(90deg, #f06292, #ce93d8, #f06292);
+      background-size: 200%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% }
+      100% { background-position: 200% }
     }
 
     /* Tipo de cambio */
     .rate-box {
       padding: 16px 24px;
-      background: #222;
+      background: #1e0d30;
       text-align: center;
-      border-bottom: 1px solid #2a2a2a;
+      border-bottom: 1px solid #3d1a55;
     }
 
     .rate-label {
       font-size: 11px;
-      color: #666;
+      color: #9575cd;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 4px;
@@ -100,18 +111,19 @@
 
     .rate-value {
       font-size: 15px;
-      color: #aaa;
+      color: #ce93d8;
       font-weight: 500;
+      animation: fadeIn 0.6s ease;
     }
 
     .rate-value span {
-      color: #fff;
+      color: #f06292;
       font-weight: 700;
     }
 
     .rate-updated {
       font-size: 10px;
-      color: #444;
+      color: #6a3d9a;
       margin-top: 4px;
     }
 
@@ -132,17 +144,17 @@
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 1px;
-      color: #888;
+      color: #7b4fa0;
     }
 
     .currency-label.active {
-      color: #fff;
+      color: #f06292;
       font-size: 15px;
     }
 
     .toggle-btn {
       flex: 1;
-      background: #2a2a2a;
+      background: #3d1a55;
       border: none;
       border-radius: 50px;
       padding: 10px;
@@ -150,19 +162,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.1s;
       -webkit-tap-highlight-color: transparent;
     }
 
     .toggle-btn:active {
-      background: #333;
+      background: #5c2d7a;
+    }
+
+    .toggle-btn.bounce {
+      animation: bounce 0.4s ease;
+    }
+
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(0.88); }
+      60%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
     }
 
     .toggle-btn svg {
       width: 20px;
       height: 20px;
-      fill: #888;
-      transition: transform 0.3s;
+      fill: #f06292;
+      transition: transform 0.35s cubic-bezier(.68,-.55,.27,1.55);
     }
 
     .toggle-btn.flipped svg {
@@ -182,36 +205,39 @@
       transform: translateY(-50%);
       font-size: 14px;
       font-weight: 700;
-      color: #555;
+      color: #9575cd;
       pointer-events: none;
     }
 
     .amount-input {
       width: 100%;
-      background: #2a2a2a;
-      border: 2px solid #333;
-      border-radius: 14px;
+      background: #2d1045;
+      border: 2px solid #5c2d7a;
+      border-radius: 16px;
       padding: 16px 16px 16px 56px;
       font-size: 22px;
       font-weight: 700;
+      font-family: 'Poppins', sans-serif;
       color: white;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.25s, box-shadow 0.25s;
       -webkit-appearance: none;
     }
 
     .amount-input:focus {
-      border-color: #555;
+      border-color: #f06292;
+      box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.15);
     }
 
     .amount-input::placeholder {
-      color: #333;
+      color: #4a2060;
     }
 
     /* Resultado */
     .result-box {
-      background: #222;
-      border-radius: 14px;
+      background: #1e0d30;
+      border: 1px solid #5c2d7a;
+      border-radius: 16px;
       padding: 20px 16px;
       text-align: center;
       min-height: 80px;
@@ -223,7 +249,7 @@
 
     .result-label {
       font-size: 11px;
-      color: #555;
+      color: #9575cd;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 8px;
@@ -232,32 +258,46 @@
     .result-value {
       font-size: 36px;
       font-weight: 800;
-      color: white;
+      color: #f06292;
       line-height: 1;
+    }
+
+    .result-value.animate {
+      animation: fadeSlideUp 0.35s ease;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .result-currency {
       font-size: 14px;
-      color: #666;
+      color: #ce93d8;
       margin-top: 6px;
       font-weight: 600;
     }
 
     /* Estados */
     .loading {
-      color: #555;
+      color: #9575cd;
       font-size: 14px;
       animation: pulse 1.5s infinite;
     }
 
     .error {
-      color: #D52B1E;
+      color: #f06292;
       font-size: 13px;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .visually-hidden {
@@ -270,6 +310,15 @@
       clip: rect(0,0,0,0);
       white-space: nowrap;
       border: 0;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 20px;
+      font-size: 10px;
+      color: #6a3d9a;
+      text-align: center;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -329,9 +378,11 @@
     </div>
   </div>
 
+  <footer class="footer">Desarrollado por GaryDev &middot; Todos los derechos reservados</footer>
+
   <script>
     let clpToMxn = null;
-    let direction = 'CLP_TO_MXN'; // o 'MXN_TO_CLP'
+    let direction = 'CLP_TO_MXN';
 
     async function fetchRate() {
       try {
@@ -359,6 +410,11 @@
       const btn = document.getElementById('toggle-btn');
       btn.classList.toggle('flipped');
 
+      // Animación bounce
+      btn.classList.remove('bounce');
+      void btn.offsetWidth; // reflow para reiniciar animación
+      btn.classList.add('bounce');
+
       if (direction === 'CLP_TO_MXN') {
         document.getElementById('from-label').textContent = 'CLP';
         document.getElementById('from-label').className = 'currency-label active';
@@ -383,20 +439,28 @@
       document.getElementById('result').textContent = '—';
     }
 
+    function animateResult(el, value) {
+      el.classList.remove('animate');
+      void el.offsetWidth;
+      el.textContent = value;
+      el.classList.add('animate');
+    }
+
     function convert() {
       if (!clpToMxn) return;
       const amount = parseFloat(document.getElementById('amount').value);
+      const resultEl = document.getElementById('result');
       if (isNaN(amount) || amount === 0) {
-        document.getElementById('result').textContent = '—';
+        resultEl.textContent = '—';
         return;
       }
       let result;
       if (direction === 'CLP_TO_MXN') {
         result = amount * clpToMxn;
-        document.getElementById('result').textContent = formatNumber(result, 2);
+        animateResult(resultEl, formatNumber(result, 2));
       } else {
         result = amount / clpToMxn;
-        document.getElementById('result').textContent = formatNumber(result, 0);
+        animateResult(resultEl, formatNumber(result, 0));
       }
     }
 
