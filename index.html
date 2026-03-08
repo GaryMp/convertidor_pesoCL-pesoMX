@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="CLP ↔ MXN" />
@@ -259,44 +259,57 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="header">
+    <div class="header" role="img" aria-label="Convertidor de pesos chilenos a pesos mexicanos">
       <div class="header-chile">
-        <span class="flag">🇨🇱</span>
+        <span class="flag" aria-hidden="true">🇨🇱</span>
         <span class="country-name">Chile</span>
       </div>
       <div class="header-mexico">
-        <span class="flag">🇲🇽</span>
+        <span class="flag" aria-hidden="true">🇲🇽</span>
         <span class="country-name">México</span>
       </div>
     </div>
 
-    <div class="divider-title">CLP ↔ MXN</div>
+    <div class="divider-title" aria-hidden="true">CLP ↔ MXN</div>
 
-    <div class="rate-box">
-      <div class="rate-label">Tipo de cambio actual</div>
-      <div class="rate-value" id="rate-display">
-        <span class="loading">Cargando...</span>
+    <div class="rate-box" aria-label="Tipo de cambio">
+      <div class="rate-label" aria-hidden="true">Tipo de cambio actual</div>
+      <div class="rate-value" id="rate-display" aria-live="polite" aria-atomic="true">
+        <span class="loading">Cargando tipo de cambio...</span>
       </div>
-      <div class="rate-updated" id="rate-updated"></div>
+      <div class="rate-updated" id="rate-updated" aria-live="polite"></div>
     </div>
 
     <div class="converter">
       <div class="toggle-row">
-        <span class="currency-label active" id="from-label">CLP</span>
-        <button class="toggle-btn" id="toggle-btn" onclick="toggleDirection()">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <span class="currency-label active" id="from-label" aria-hidden="true">CLP</span>
+        <button class="toggle-btn" id="toggle-btn" onclick="toggleDirection()" aria-label="Cambiar dirección: actualmente convierte de Peso Chileno a Peso Mexicano">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/>
           </svg>
         </button>
-        <span class="currency-label" id="to-label">MXN</span>
+        <span class="currency-label" id="to-label" aria-hidden="true">MXN</span>
       </div>
 
       <div class="input-group">
-        <span class="input-currency" id="input-currency">CLP</span>
+        <span class="input-currency" id="input-currency" aria-hidden="true">CLP</span>
+        <label for="amount" class="visually-hidden">Monto en Peso Chileno</label>
         <input
           type="number"
           class="amount-input"
@@ -304,11 +317,12 @@
           placeholder="0"
           inputmode="decimal"
           oninput="convert()"
+          aria-describedby="result"
         />
       </div>
 
-      <div class="result-box">
-        <div class="result-label">Equivale a</div>
+      <div class="result-box" role="status" aria-live="polite" aria-atomic="true">
+        <div class="result-label" aria-hidden="true">Equivale a</div>
         <div class="result-value" id="result">—</div>
         <div class="result-currency" id="result-currency">MXN</div>
       </div>
@@ -352,6 +366,8 @@
         document.getElementById('to-label').className = 'currency-label';
         document.getElementById('input-currency').textContent = 'CLP';
         document.getElementById('result-currency').textContent = 'MXN';
+        btn.setAttribute('aria-label', 'Cambiar dirección: actualmente convierte de Peso Chileno a Peso Mexicano');
+        document.querySelector('label[for="amount"]').textContent = 'Monto en Peso Chileno';
       } else {
         document.getElementById('from-label').textContent = 'MXN';
         document.getElementById('from-label').className = 'currency-label active';
@@ -359,6 +375,8 @@
         document.getElementById('to-label').className = 'currency-label';
         document.getElementById('input-currency').textContent = 'MXN';
         document.getElementById('result-currency').textContent = 'CLP';
+        btn.setAttribute('aria-label', 'Cambiar dirección: actualmente convierte de Peso Mexicano a Peso Chileno');
+        document.querySelector('label[for="amount"]').textContent = 'Monto en Peso Mexicano';
       }
 
       document.getElementById('amount').value = '';
