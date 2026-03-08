@@ -19,24 +19,27 @@
     body {
       font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100dvh;
-      background: #1a0826;
+      background: linear-gradient(180deg, #89c4e8 0%, #b3dff5 55%, #c8eccc 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 20px 20px 140px;
     }
 
+    /* ── Tarjeta ── */
     .card {
       background: #25103a;
       border-radius: 28px;
       width: 100%;
       max-width: 400px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(240, 98, 146, 0.18), 0 0 0 1px rgba(206, 147, 216, 0.1);
+      box-shadow: 0 20px 60px rgba(240, 98, 146, 0.22), 0 0 0 1px rgba(206, 147, 216, 0.12);
+      position: relative;
+      z-index: 2;
     }
 
-    /* Header con franjas de banderas */
+    /* ── Header banderas ── */
     .header {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -58,10 +61,7 @@
       align-items: flex-end;
     }
 
-    .flag {
-      font-size: 32px;
-      line-height: 1;
-    }
+    .flag { font-size: 32px; line-height: 1; }
 
     .country-name {
       color: white;
@@ -77,23 +77,23 @@
       text-align: center;
       font-size: 22px;
       font-weight: 800;
-      background: #160720;
       padding: 10px;
       letter-spacing: 2px;
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       background-image: linear-gradient(90deg, #f06292, #ce93d8, #f06292);
+      background-color: #160720;
       background-size: 200%;
       animation: shimmer 3s linear infinite;
     }
 
     @keyframes shimmer {
-      0% { background-position: 0% }
+      0%   { background-position: 0% }
       100% { background-position: 200% }
     }
 
-    /* Tipo de cambio */
+    /* ── Tipo de cambio ── */
     .rate-box {
       padding: 16px 24px;
       background: #1e0d30;
@@ -118,10 +118,7 @@
       line-height: 1.6;
     }
 
-    .rate-value span {
-      color: #f06292;
-      font-weight: 700;
-    }
+    .rate-value span { color: #f06292; font-weight: 700; }
 
     .rate-updated {
       font-size: 10px;
@@ -129,12 +126,9 @@
       margin-top: 4px;
     }
 
-    /* Conversor */
-    .converter {
-      padding: 24px;
-    }
+    /* ── Conversor ── */
+    .converter { padding: 24px; }
 
-    /* Toggle */
     .toggle-row {
       display: flex;
       align-items: center;
@@ -149,10 +143,7 @@
       color: #7b4fa0;
     }
 
-    .currency-label.active {
-      color: #f06292;
-      font-size: 15px;
-    }
+    .currency-label.active { color: #f06292; font-size: 15px; }
 
     .toggle-btn {
       flex: 1;
@@ -164,17 +155,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s, transform 0.1s;
+      transition: background 0.2s;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .toggle-btn:active {
-      background: #5c2d7a;
-    }
+    .toggle-btn:active { background: #5c2d7a; }
 
-    .toggle-btn.bounce {
-      animation: bounce 0.4s ease;
-    }
+    .toggle-btn.bounce { animation: bounce 0.4s ease; }
 
     @keyframes bounce {
       0%   { transform: scale(1); }
@@ -190,15 +177,10 @@
       transition: transform 0.35s cubic-bezier(.68,-.55,.27,1.55);
     }
 
-    .toggle-btn.flipped svg {
-      transform: rotate(180deg);
-    }
+    .toggle-btn.flipped svg { transform: rotate(180deg); }
 
-    /* Input */
-    .input-group {
-      position: relative;
-      margin-bottom: 16px;
-    }
+    /* ── Input ── */
+    .input-group { position: relative; margin-bottom: 16px; }
 
     .input-currency {
       position: absolute;
@@ -231,11 +213,13 @@
       box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.15);
     }
 
-    .amount-input::placeholder {
-      color: #4a2060;
-    }
+    .amount-input::placeholder { color: #4a2060; }
 
-    /* Resultado */
+    .amount-input::-webkit-outer-spin-button,
+    .amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .amount-input[type=number] { -moz-appearance: textfield; }
+
+    /* ── Resultado ── */
     .result-box {
       background: #1e0d30;
       border: 1px solid #5c2d7a;
@@ -264,9 +248,7 @@
       line-height: 1;
     }
 
-    .result-value.animate {
-      animation: fadeSlideUp 0.35s ease;
-    }
+    .result-value.animate { animation: fadeSlideUp 0.35s ease; }
 
     @keyframes fadeSlideUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -280,21 +262,18 @@
       font-weight: 600;
     }
 
-    /* Estados */
+    /* ── Estados ── */
     .loading {
       color: #9575cd;
       font-size: 14px;
       animation: pulse 1.5s infinite;
     }
 
-    .error {
-      color: #f06292;
-      font-size: 13px;
-    }
+    .error { color: #f06292; font-size: 13px; }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      50%       { opacity: 0.4; }
     }
 
     @keyframes fadeIn {
@@ -304,37 +283,76 @@
 
     .visually-hidden {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
       overflow: hidden;
       clip: rect(0,0,0,0);
       white-space: nowrap;
       border: 0;
     }
 
-    /* Footer */
+    /* ── Footer ── */
     .footer {
+      position: relative;
+      z-index: 2;
       margin-top: 20px;
       font-size: 10px;
-      color: #6a3d9a;
+      color: #5c2d7a;
       text-align: center;
       letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.6);
     }
 
-    /* Ocultar flechas del input number en desktop */
-    .amount-input::-webkit-outer-spin-button,
-    .amount-input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    /* ── Césped ── */
+    .grass-layer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 110px;
+      z-index: 0;
+      pointer-events: none;
     }
-    .amount-input[type=number] {
-      -moz-appearance: textfield;
+
+    .grass-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 45px;
+    }
+
+    .grass-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 30px;
+      background: linear-gradient(180deg, #7ac970 0%, #52a646 100%);
+    }
+
+    /* ── Flores ── */
+    .flower {
+      position: fixed;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0)    rotate(-6deg); }
+      100% { transform: translateY(-18px) rotate(6deg); }
+    }
+
+    @keyframes swayAnim {
+      0%   { transform: rotate(-18deg) scale(0.92); }
+      100% { transform: rotate(18deg)  scale(1.08); }
     }
   </style>
 </head>
 <body>
+
   <div class="card">
     <div class="header" role="img" aria-label="Convertidor de pesos chilenos a pesos mexicanos">
       <div class="header-chile">
@@ -360,7 +378,8 @@
     <div class="converter">
       <div class="toggle-row">
         <span class="currency-label active" id="from-label" aria-hidden="true">CLP</span>
-        <button class="toggle-btn" id="toggle-btn" onclick="toggleDirection()" aria-label="Cambiar dirección: actualmente convierte de Peso Chileno a Peso Mexicano">
+        <button class="toggle-btn" id="toggle-btn" onclick="toggleDirection()"
+          aria-label="Cambiar dirección: actualmente convierte de Peso Chileno a Peso Mexicano">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/>
           </svg>
@@ -389,26 +408,54 @@
     </div>
   </div>
 
-  <div class="footer" aria-label="Desarrollado por GaryDev, todos los derechos reservados">Desarrollado por GaryDev &nbsp;·&nbsp; Todos los derechos reservados</div>
+  <div class="footer" aria-label="Desarrollado por GaryDev, todos los derechos reservados">
+    Desarrollado por GaryDev &nbsp;·&nbsp; Todos los derechos reservados
+  </div>
+
+  <!-- Césped -->
+  <div class="grass-layer" aria-hidden="true">
+    <svg class="grass-wave" viewBox="0 0 1440 45" preserveAspectRatio="none">
+      <path d="M0,28 C60,8 120,44 180,28 C240,8 300,44 360,28 C420,8 480,44 540,28 C600,8 660,44 720,28 C780,8 840,44 900,28 C960,8 1020,44 1080,28 C1140,8 1200,44 1260,28 C1320,8 1380,44 1440,28 L1440,45 L0,45 Z" fill="#7ac970"/>
+    </svg>
+    <div class="grass-body"></div>
+  </div>
 
   <script>
     let clpToMxn = null;
     let direction = 'CLP_TO_MXN';
 
+    // ── Flores ──
+    const flowerEmojis = ['🌸', '🌺', '🌷', '🌼'];
+    for (let i = 0; i < 16; i++) {
+      const el = document.createElement('span');
+      el.setAttribute('aria-hidden', 'true');
+      el.className = 'flower';
+      el.textContent = flowerEmojis[i % flowerEmojis.length];
+      const size    = 14 + Math.random() * 20;
+      const left    = 1  + Math.random() * 97;
+      const bottom  = 8  + Math.random() * 80;
+      const dur     = 2  + Math.random() * 3;
+      const delay   = Math.random() * 3;
+      const anim    = i % 2 === 0 ? 'floatUp' : 'swayAnim';
+      el.style.cssText = `font-size:${size}px;left:${left}vw;bottom:${bottom}px;animation:${anim} ${dur}s ease-in-out ${delay}s infinite alternate;`;
+      document.body.appendChild(el);
+    }
+
+    // ── API ──
     async function fetchRate() {
       try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const res  = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        const clp = data.rates.CLP;
-        const mxn = data.rates.MXN;
-        clpToMxn = mxn / clp;
+        const clp  = data.rates.CLP;
+        const mxn  = data.rates.MXN;
+        clpToMxn   = mxn / clp;
 
         document.getElementById('rate-display').innerHTML =
-          `1 CLP = <span>${clpToMxn.toFixed(6)}</span> MXN<br>1 MXN = <span>${(1 / clpToMxn).toFixed(2)}</span> CLP`;
+          `1 CLP = <span>${clpToMxn.toFixed(6)}</span> MXN<br>1 MXN = <span>${(1/clpToMxn).toFixed(2)}</span> CLP`;
 
         const fecha = new Date(data.time_last_update_utc);
         document.getElementById('rate-updated').textContent =
-          'Actualizado: ' + fecha.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+          'Actualizado: ' + fecha.toLocaleDateString('es-CL', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
 
         convert();
       } catch (e) {
@@ -420,10 +467,8 @@
       direction = direction === 'CLP_TO_MXN' ? 'MXN_TO_CLP' : 'CLP_TO_MXN';
       const btn = document.getElementById('toggle-btn');
       btn.classList.toggle('flipped');
-
-      // Animación bounce
       btn.classList.remove('bounce');
-      void btn.offsetWidth; // reflow para reiniciar animación
+      void btn.offsetWidth;
       btn.classList.add('bounce');
 
       if (direction === 'CLP_TO_MXN') {
@@ -456,26 +501,24 @@
       el.textContent = value;
       el.setAttribute('aria-label', ariaLabel);
       el.classList.add('animate');
-      // En móvil, hacer scroll para que el resultado sea visible
       el.closest('.result-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function convert() {
       if (!clpToMxn) return;
-      const amount = parseFloat(document.getElementById('amount').value);
+      const amount   = parseFloat(document.getElementById('amount').value);
       const resultEl = document.getElementById('result');
       if (isNaN(amount) || amount === 0) {
         resultEl.textContent = '—';
         resultEl.setAttribute('aria-label', 'Sin resultado');
         return;
       }
-      let result;
       if (direction === 'CLP_TO_MXN') {
-        result = amount * clpToMxn;
+        const result    = amount * clpToMxn;
         const formatted = formatNumber(result, 2);
         animateResult(resultEl, formatted, `${formatted} pesos mexicanos`);
       } else {
-        result = amount / clpToMxn;
+        const result    = amount / clpToMxn;
         const formatted = formatNumber(result, 0);
         animateResult(resultEl, formatted, `${formatted} pesos chilenos`);
       }
