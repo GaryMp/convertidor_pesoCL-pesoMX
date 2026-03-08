@@ -336,6 +336,58 @@
       0%   { transform: rotate(-18deg) scale(0.92); }
       100% { transform: rotate(18deg)  scale(1.08); }
     }
+
+    /* ── Mariposa ── */
+    .butterfly {
+      position: fixed;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      pointer-events: all;
+      filter: drop-shadow(0 1px 3px rgba(123,31,162,0.25));
+      transition: filter 0.2s;
+    }
+
+    .bfly-left, .bfly-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bfly-left {
+      animation: flapL 2.8s ease-in-out infinite;
+      transform-origin: right center;
+    }
+
+    .bfly-right {
+      animation: flapR 2.8s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .wing-tl { width: 13px; height: 11px; background: rgba(233,30,140,0.82); border-radius: 50% 0 20% 10%; }
+    .wing-bl { width: 10px; height: 8px;  background: rgba(186,104,200,0.78); border-radius: 10% 0 10% 50%; margin-top: 1px; }
+    .wing-tr { width: 13px; height: 11px; background: rgba(233,30,140,0.82); border-radius: 0 50% 10% 20%; }
+    .wing-br { width: 10px; height: 8px;  background: rgba(186,104,200,0.78); border-radius: 0 10% 50% 10%; margin-top: 1px; align-self: flex-end; }
+
+    .bfly-body {
+      width: 4px; height: 17px;
+      background: linear-gradient(180deg, #4a148c 0%, #7b1fa2 100%);
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    @keyframes flapL {
+      0%, 100% { transform: scaleX(1); }
+      50%       { transform: scaleX(0.08); }
+    }
+    @keyframes flapR {
+      0%, 100% { transform: scaleX(1); }
+      50%       { transform: scaleX(0.08); }
+    }
+
+    .butterfly.flying .bfly-left { animation-duration: 0.25s; }
+    .butterfly.flying .bfly-right { animation-duration: 0.25s; }
   </style>
 </head>
 <body>
@@ -404,6 +456,19 @@
     Desarrollado por GaryDev &nbsp;·&nbsp; Todos los derechos reservados
   </div>
 
+  <!-- Mariposa -->
+  <div class="butterfly" id="butterfly" aria-hidden="true">
+    <div class="bfly-left">
+      <div class="wing-tl"></div>
+      <div class="wing-bl"></div>
+    </div>
+    <div class="bfly-body"></div>
+    <div class="bfly-right">
+      <div class="wing-tr"></div>
+      <div class="wing-br"></div>
+    </div>
+  </div>
+
   <!-- Césped -->
   <div class="grass-layer" aria-hidden="true">
     <svg class="grass-wave" viewBox="0 0 1440 45" preserveAspectRatio="none">
@@ -432,6 +497,58 @@
       el.style.cssText = `font-size:${size}px;left:${left}vw;bottom:${bottom}px;animation:${anim} ${dur}s ease-in-out ${delay}s infinite alternate;`;
       document.body.appendChild(el);
     }
+
+    // ── Mariposa ──
+    const butterfly = document.getElementById('butterfly');
+    let bflyPos  = { x: 18 + Math.random() * 20, y: 30 + Math.random() * 50 };
+    let isFlying = false;
+
+    butterfly.style.left   = bflyPos.x + 'vw';
+    butterfly.style.bottom = bflyPos.y + 'px';
+
+    function newFlowerPos() {
+      return {
+        x: 4  + Math.random() * 88,
+        y: 14 + Math.random() * 72
+      };
+    }
+
+    function flyTo() {
+      if (isFlying) return;
+      isFlying = true;
+      butterfly.classList.add('flying');
+
+      const start  = { ...bflyPos };
+      const target = newFlowerPos();
+      const cp = {
+        x: (start.x + target.x) / 2 + (Math.random() - 0.5) * 25,
+        y: Math.max(start.y, target.y) + 55 + Math.random() * 35
+      };
+      const duration  = 900 + Math.random() * 500;
+      const startTime = performance.now();
+
+      function frame(now) {
+        const t    = Math.min((now - startTime) / duration, 1);
+        const ease = t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t;
+        const x = (1-ease)*(1-ease)*start.x + 2*(1-ease)*ease*cp.x + ease*ease*target.x;
+        const y = (1-ease)*(1-ease)*start.y + 2*(1-ease)*ease*cp.y + ease*ease*target.y;
+
+        butterfly.style.left   = x + 'vw';
+        butterfly.style.bottom = y + 'px';
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          bflyPos = { ...target };
+          isFlying = false;
+          butterfly.classList.remove('flying');
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    butterfly.addEventListener('click', flyTo);
+    butterfly.addEventListener('touchstart', e => { e.preventDefault(); flyTo(); }, { passive: false });
 
     // ── API ──
     async function fetchRate() {
