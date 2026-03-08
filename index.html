@@ -320,6 +320,16 @@
       text-align: center;
       letter-spacing: 0.5px;
     }
+
+    /* Ocultar flechas del input number en desktop */
+    .amount-input::-webkit-outer-spin-button,
+    .amount-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .amount-input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -372,13 +382,13 @@
 
       <div class="result-box" role="status" aria-live="polite" aria-atomic="true">
         <div class="result-label" aria-hidden="true">Equivale a</div>
-        <div class="result-value" id="result">—</div>
+        <div class="result-value" id="result" aria-label="Sin resultado">—</div>
         <div class="result-currency" id="result-currency">MXN</div>
       </div>
     </div>
   </div>
 
-  <footer class="footer">Desarrollado por GaryDev &middot; Todos los derechos reservados</footer>
+  <div class="footer" aria-label="Desarrollado por GaryDev, todos los derechos reservados">Desarrollado por GaryDev &nbsp;·&nbsp; Todos los derechos reservados</div>
 
   <script>
     let clpToMxn = null;
@@ -439,11 +449,14 @@
       document.getElementById('result').textContent = '—';
     }
 
-    function animateResult(el, value) {
+    function animateResult(el, value, ariaLabel) {
       el.classList.remove('animate');
       void el.offsetWidth;
       el.textContent = value;
+      el.setAttribute('aria-label', ariaLabel);
       el.classList.add('animate');
+      // En móvil, hacer scroll para que el resultado sea visible
+      el.closest('.result-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function convert() {
@@ -452,15 +465,18 @@
       const resultEl = document.getElementById('result');
       if (isNaN(amount) || amount === 0) {
         resultEl.textContent = '—';
+        resultEl.setAttribute('aria-label', 'Sin resultado');
         return;
       }
       let result;
       if (direction === 'CLP_TO_MXN') {
         result = amount * clpToMxn;
-        animateResult(resultEl, formatNumber(result, 2));
+        const formatted = formatNumber(result, 2);
+        animateResult(resultEl, formatted, `${formatted} pesos mexicanos`);
       } else {
         result = amount / clpToMxn;
-        animateResult(resultEl, formatNumber(result, 0));
+        const formatted = formatNumber(result, 0);
+        animateResult(resultEl, formatted, `${formatted} pesos chilenos`);
       }
     }
 
