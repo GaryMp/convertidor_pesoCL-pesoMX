@@ -7,6 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="CLP ↔ MXN" />
   <title>CLP ↔ MXN</title>
+  <meta name="theme-color" content="#89c4e8" />
   <link rel="manifest" href="manifest.json" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -24,7 +25,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 20px 140px;
+      padding: 20px 20px calc(140px + env(safe-area-inset-bottom));
     }
 
     /* ── Tarjeta ── */
@@ -157,8 +158,10 @@
       justify-content: center;
       transition: background 0.2s;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
+    .toggle-btn:hover  { background: #4d2268; }
     .toggle-btn:active { background: #5c2d7a; }
 
     .toggle-btn.bounce { animation: bounce 0.4s ease; }
@@ -208,7 +211,7 @@
       -webkit-appearance: none;
     }
 
-    .amount-input:focus {
+    .amount-input:focus-visible {
       border-color: #f06292;
       box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.15);
     }
@@ -246,6 +249,7 @@
       font-weight: 800;
       color: #f06292;
       line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
 
     .result-value.animate { animation: fadeSlideUp 0.35s ease; }
@@ -365,12 +369,13 @@
       </div>
     </div>
 
+    <h1 class="visually-hidden">Convertidor CLP a MXN</h1>
     <div class="divider-title" aria-hidden="true">CLP ↔ MXN</div>
 
     <div class="rate-box" aria-label="Tipo de cambio">
       <div class="rate-label" aria-hidden="true">Tipo de cambio actual</div>
       <div class="rate-value" id="rate-display" aria-live="polite" aria-atomic="true">
-        <span class="loading">Cargando tipo de cambio...</span>
+        <span class="loading">Cargando tipo de cambio…</span>
       </div>
       <div class="rate-updated" id="rate-updated" aria-live="polite"></div>
     </div>
@@ -394,6 +399,8 @@
           type="number"
           class="amount-input"
           id="amount"
+          name="amount"
+          autocomplete="off"
           placeholder="0"
           inputmode="decimal"
           oninput="convert()"
