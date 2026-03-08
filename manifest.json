@@ -1,0 +1,17 @@
+{
+  "name": "Convertidor CLP ↔ MXN",
+  "short_name": "CLP ↔ MXN",
+  "description": "Convertidor de peso chileno a peso mexicano",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4b1.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    }
+  ]
+}

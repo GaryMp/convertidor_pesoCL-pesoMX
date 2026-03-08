@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CLP ↔ MXN" />
+  <title>CLP ↔ MXN</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100dvh;
+      background: #0f0f0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* Header con franjas de banderas */
+    .header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .header-chile {
+      background: linear-gradient(135deg, #0039A6 0%, #0039A6 50%, #D52B1E 50%, #D52B1E 100%);
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .header-mexico {
+      background: linear-gradient(135deg, #006847 0%, #006847 50%, #CE1126 50%, #CE1126 100%);
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .flag {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .country-name {
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 6px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .divider-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: white;
+      background: #111;
+      padding: 10px;
+      letter-spacing: 2px;
+    }
+
+    /* Tipo de cambio */
+    .rate-box {
+      padding: 16px 24px;
+      background: #222;
+      text-align: center;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .rate-label {
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .rate-value {
+      font-size: 15px;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .rate-value span {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .rate-updated {
+      font-size: 10px;
+      color: #444;
+      margin-top: 4px;
+    }
+
+    /* Conversor */
+    .converter {
+      padding: 24px;
+    }
+
+    /* Toggle */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .currency-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #888;
+    }
+
+    .currency-label.active {
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 50px;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .toggle-btn:active {
+      background: #333;
+    }
+
+    .toggle-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #888;
+      transition: transform 0.3s;
+    }
+
+    .toggle-btn.flipped svg {
+      transform: rotate(180deg);
+    }
+
+    /* Input */
+    .input-group {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .input-currency {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      font-weight: 700;
+      color: #555;
+      pointer-events: none;
+    }
+
+    .amount-input {
+      width: 100%;
+      background: #2a2a2a;
+      border: 2px solid #333;
+      border-radius: 14px;
+      padding: 16px 16px 16px 56px;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .amount-input:focus {
+      border-color: #555;
+    }
+
+    .amount-input::placeholder {
+      color: #333;
+    }
+
+    /* Resultado */
+    .result-box {
+      background: #222;
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-label {
+      font-size: 11px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .result-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+    }
+
+    .result-currency {
+      font-size: 14px;
+      color: #666;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Estados */
+    .loading {
+      color: #555;
+      font-size: 14px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .error {
+      color: #D52B1E;
+      font-size: 13px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="header-chile">
+        <span class="flag">🇨🇱</span>
+        <span class="country-name">Chile</span>
+      </div>
+      <div class="header-mexico">
+        <span class="flag">🇲🇽</span>
+        <span class="country-name">México</span>
+      </div>
+    </div>
+
+    <div class="divider-title">CLP ↔ MXN</div>
+
+    <div class="rate-box">
+      <div class="rate-label">Tipo de cambio actual</div>
+      <div class="rate-value" id="rate-display">
+        <span class="loading">Cargando...</span>
+      </div>
+      <div class="rate-updated" id="rate-updated"></div>
+    </div>
+
+    <div class="converter">
+      <div class="toggle-row">
+        <span class="currency-label active" id="from-label">CLP</span>
+        <button class="toggle-btn" id="toggle-btn" onclick="toggleDirection()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/>
+          </svg>
+        </button>
+        <span class="currency-label" id="to-label">MXN</span>
+      </div>
+
+      <div class="input-group">
+        <span class="input-currency" id="input-currency">CLP</span>
+        <input
+          type="number"
+          class="amount-input"
+          id="amount"
+          placeholder="0"
+          inputmode="decimal"
+          oninput="convert()"
+        />
+      </div>
+
+      <div class="result-box">
+        <div class="result-label">Equivale a</div>
+        <div class="result-value" id="result">—</div>
+        <div class="result-currency" id="result-currency">MXN</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let clpToMxn = null;
+    let direction = 'CLP_TO_MXN'; // o 'MXN_TO_CLP'
+
+    async function fetchRate() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+        const clp = data.rates.CLP;
+        const mxn = data.rates.MXN;
+        clpToMxn = mxn / clp;
+
+        document.getElementById('rate-display').innerHTML =
+          `1 CLP = <span>${clpToMxn.toFixed(6)}</span> MXN &nbsp;|&nbsp; 1 MXN = <span>${(1 / clpToMxn).toFixed(2)}</span> CLP`;
+
+        const fecha = new Date(data.time_last_update_utc);
+        document.getElementById('rate-updated').textContent =
+          'Actualizado: ' + fecha.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        convert();
+      } catch (e) {
+        document.getElementById('rate-display').innerHTML = '<span class="error">Error al cargar tipo de cambio</span>';
+      }
+    }
+
+    function toggleDirection() {
+      direction = direction === 'CLP_TO_MXN' ? 'MXN_TO_CLP' : 'CLP_TO_MXN';
+      const btn = document.getElementById('toggle-btn');
+      btn.classList.toggle('flipped');
+
+      if (direction === 'CLP_TO_MXN') {
+        document.getElementById('from-label').textContent = 'CLP';
+        document.getElementById('from-label').className = 'currency-label active';
+        document.getElementById('to-label').textContent = 'MXN';
+        document.getElementById('to-label').className = 'currency-label';
+        document.getElementById('input-currency').textContent = 'CLP';
+        document.getElementById('result-currency').textContent = 'MXN';
+      } else {
+        document.getElementById('from-label').textContent = 'MXN';
+        document.getElementById('from-label').className = 'currency-label active';
+        document.getElementById('to-label').textContent = 'CLP';
+        document.getElementById('to-label').className = 'currency-label';
+        document.getElementById('input-currency').textContent = 'MXN';
+        document.getElementById('result-currency').textContent = 'CLP';
+      }
+
+      document.getElementById('amount').value = '';
+      document.getElementById('result').textContent = '—';
+    }
+
+    function convert() {
+      if (!clpToMxn) return;
+      const amount = parseFloat(document.getElementById('amount').value);
+      if (isNaN(amount) || amount === 0) {
+        document.getElementById('result').textContent = '—';
+        return;
+      }
+      let result;
+      if (direction === 'CLP_TO_MXN') {
+        result = amount * clpToMxn;
+        document.getElementById('result').textContent = formatNumber(result, 2);
+      } else {
+        result = amount / clpToMxn;
+        document.getElementById('result').textContent = formatNumber(result, 0);
+      }
+    }
+
+    function formatNumber(n, decimals) {
+      return n.toLocaleString('es-CL', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    }
+
+    fetchRate();
+  </script>
+</body>
+</html>
