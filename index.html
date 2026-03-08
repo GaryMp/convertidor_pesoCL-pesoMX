@@ -110,10 +110,12 @@
     }
 
     .rate-value {
-      font-size: 15px;
+      font-size: 13px;
       color: #ce93d8;
       font-weight: 500;
       animation: fadeIn 0.6s ease;
+      word-break: break-word;
+      line-height: 1.6;
     }
 
     .rate-value span {
@@ -402,7 +404,7 @@
         clpToMxn = mxn / clp;
 
         document.getElementById('rate-display').innerHTML =
-          `1 CLP = <span>${clpToMxn.toFixed(6)}</span> MXN &nbsp;|&nbsp; 1 MXN = <span>${(1 / clpToMxn).toFixed(2)}</span> CLP`;
+          `1 CLP = <span>${clpToMxn.toFixed(6)}</span> MXN<br>1 MXN = <span>${(1 / clpToMxn).toFixed(2)}</span> CLP`;
 
         const fecha = new Date(data.time_last_update_utc);
         document.getElementById('rate-updated').textContent =
